@@ -1,50 +1,15 @@
-export const projectCards = [
-  {
-    image: "https://via.placeholder.com/250x140",
-    title: "โครงการปลูกป่าโดยกลุ่มอาสาสมัครประชาชน",
+export const projectCards = Array.from({ length: 106 }, (_, index) => {
+  const categories = ["สิ่งแวดล้อม", "โครงการรณรงค์", "สังคม"];
+  const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+  const randomAmount = Math.floor(Math.random() * 500000).toLocaleString();
+  const randomTarget = Math.floor(Math.random() * 1000000 + 100000).toLocaleString();
+  
+  return {
+    image: "https://www.mahatai.org/wp-content/uploads/2025/04/450097_0-300x225.jpg",
+    title: `โครงการพัฒนาชุมชนและสิ่งแวดล้อม รุ่นที่ ${index + 1}`,
     description: "รายละเอียดโครงการ...",
-    category: "สิ่งแวดล้อม",
-    amount: "268,686",
-    target: "463,100",
-  },
-  {
-    image: "https://via.placeholder.com/250x140",
-    title: "รวมตัวกันปลูกป่าชายเลนที่บางปู เพื่อสร้างความสมดุลให้ระบบนิเวศ",
-    description: "รายละเอียดโครงการ...",
-    category: "สิ่งแวดล้อม",
-    amount: "11,097",
-    target: "115,500",
-  },
-  {
-    image: "https://via.placeholder.com/250x140",
-    title: "โครงการปลูกป่าเพื่อ อากาศบริสุทธิ์ทั่วโลก",
-    description: "รายละเอียดโครงการ...",
-    category: "สิ่งแวดล้อม",
-    amount: "1,129",
-    target: "365,000",
-  },
-  {
-    image: "https://via.placeholder.com/250x140",
-    title: "Bye Bye Plastic Bags Thailand",
-    description: "รายละเอียดโครงการ...",
-    category: "โครงการรณรงค์",
-    amount: "3,985",
-    target: "385,000",
-  },
-  {
-    image: "https://via.placeholder.com/250x140",
-    title: "กลุ่มทนายอาสาเพื่อสิทธิมนุษยชน",
-    description: "รายละเอียดโครงการ...",
-    category: "สังคม",
-    amount: "5,000",
-    target: "100,000",
-  },
-  {
-    image: "https://via.placeholder.com/250x140",
-    title: "ชื่อโครงการ 6",
-    description: "รายละเอียดโครงการ...",
-    category: "สิ่งแวดล้อม",
-    amount: "10,000",
-    target: "200,000",
-  },
-];
+    category: randomCategory,
+    amount: randomAmount,
+    target: randomTarget,
+  };
+});

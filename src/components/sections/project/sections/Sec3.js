@@ -1,9 +1,10 @@
 "use client";
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { motion, useInView } from 'framer-motion';
 
 function Sec3() {
   const results = [
@@ -33,81 +34,132 @@ function Sec3() {
     }
   ];
 
+  const sectionRef = useRef(null);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, x: -20 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: {
+        type: "spring",
+        stiffness: 100,
+        damping: 12
+      }
+    }
+  };
+
   return (
-    <section className="bg-layout-default py-10 md:py-24">
-      <div className="mx-auto space-y-8 lg:container xl:max-w-screen-xl">
-        <div className="flex items-end justify-between py-4">
-          <h2 className="mb-0 flex-1 space-y-3 px-3 text-center">
-            <span className="block text-2xl font-semibold text-orange-500 md:text-4xl">
-              ผลลัพธ์จากการร่วมบริจาคของทุกคน
-            </span>
-            <span className="block text-base font-medium text-gray-600 md:text-lg">
-              เงินที่คุณร่วมบริจาค ทำให้เกิดสิ่งดีๆเหล่านี้..
-            </span>
+    <section ref={sectionRef} className="bg-layout-default py-8 sm:py-12 md:py-16 lg:py-20 xl:py-24 px-4 sm:px-6">
+      <div className="mx-auto max-w-7xl space-y-6 sm:space-y-8 md:space-y-10">
+        <motion.div 
+          initial={{ opacity: 0, y: -20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+          transition={{ duration: 0.6 }}
+          className="flex flex-col items-center text-center"
+        >
+          <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-blue-500 mb-2 sm:mb-3">
+            ผลลัพธ์จากการร่วมบริจาคของทุกคน
           </h2>
-        </div>
+          <p className="text-base sm:text-lg text-gray-600 max-w-2xl">
+            เงินที่คุณร่วมบริจาค ทำให้เกิดสิ่งดีๆเหล่านี้..
+          </p>
+        </motion.div>
 
-        <div className="relative flex items-center">
-          <button className="absolute -left-4 z-20 hidden rounded-full border border-gray-200 bg-white p-1 hover:bg-gray-100 disabled:opacity-0 lg:block" disabled>
-            <ChevronLeft className="h-6 w-6" />
-          </button>
+        <div className="relative">
+          {/* Navigation arrows - show only on large screens */}
+          <motion.button 
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-20 hidden lg:flex items-center justify-center rounded-full border border-gray-200 bg-white p-1.5 hover:bg-gray-100 shadow-md" 
+            disabled
+          >
+            <ChevronLeft className="h-5 w-5" />
+          </motion.button>
           
-          <div className="embla relative">
-            <div className="embla__viewport">
-              <div className="embla__container flex space-x-4 px-4 lg:px-0">
-                {results.map((result, index) => (
-                  <div key={index} className="flex">
-                    <article className="relative h-full min-w-[18rem] overflow-hidden rounded-lg border border-gray-200 bg-white px-4 py-5">
-                      <Link href={result.link} className="line-clamp-2 flex h-full flex-col gap-3 rounded text-gray-700 no-underline transition duration-500 ease-in-out">
-                        <div className="flex grow flex-col justify-between">
-                          <div className="space-y-2">
-                            <div className="space-y-1.5">
-                              <div className="w-fit space-x-1 rounded-3xl border bg-white px-2 py-1 font-anuphan text-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="inline-block h-5 w-5 fill-[#FED74B] align-middle">
-                                  <path d="M7 22V2l10 5-10 5"></path>
-                                </svg>
-                                <span> {result.type}</span>
-                              </div>
-                              <h2 className="line-clamp-2 h-12 font-noto-sans-thai-looped text-base font-medium leading-6">
-                                {result.title}
-                              </h2>
-                              <ArrowUpRight className="absolute right-2 top-1 stroke-orange-500" />
-                            </div>
-                            <div className="space-y-3">
-                              <div className="relative">
-                                <div className="relative overflow-hidden m-0 rounded-md" style={{ paddingBottom: '66.6667%' }}>
-                                  <Image
-                                    src={result.image}
-                                    alt={result.title}
-                                    width={192}
-                                    height={128}
-                                    className="absolute left-0 top-0 m-0 origin-top-left w-full h-full object-cover"
-                                    loading="lazy"
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
+          <motion.div 
+            variants={containerVariants}
+            initial="hidden"
+            animate={isInView ? "visible" : "hidden"}
+            className="overflow-x-auto pb-4 -mx-4 px-4 sm:mx-0 sm:px-0"
+          >
+            <div className="flex gap-3 sm:gap-4 md:gap-5 w-max sm:w-full">
+              {results.map((result, index) => (
+                <motion.div 
+                  key={index} 
+                  variants={itemVariants}
+                  whileHover={{ y: -5, transition: { duration: 0.2 } }}
+                  className="flex-shrink-0 w-[280px] sm:w-[300px] md:w-[320px]"
+                >
+                  <article className="relative h-full overflow-hidden rounded-lg border border-gray-200 bg-white hover:shadow-md transition-shadow duration-300">
+                    <Link href={result.link} className="flex h-full flex-col no-underline">
+                      <div className="p-4 pb-0">
+                        <div className="inline-flex items-center rounded-full bg-white px-3 py-1 text-xs sm:text-sm font-medium border">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1 h-4 w-4 fill-[#FED74B]">
+                            <path d="M7 22V2l10 5-10 5"></path>
+                          </svg>
+                          {result.type}
                         </div>
-                      </Link>
-                    </article>
-                  </div>
-                ))}
-              </div>
+                      </div>
+                      <div className="p-4 pt-2">
+                        <h2 className="text-sm sm:text-base font-medium leading-snug line-clamp-2 h-[3.5em]">
+                          {result.title}
+                        </h2>
+                        <ArrowUpRight className="absolute right-3 top-4 h-4 w-4 stroke-blue-500" />
+                      </div>
+                      <div className="relative aspect-video w-full overflow-hidden">
+                        <Image
+                          src={result.image}
+                          alt={result.title}
+                          fill
+                          className="object-cover"
+                          sizes="(max-width: 640px) 280px, (max-width: 768px) 300px, 320px"
+                          loading="lazy"
+                        />
+                      </div>
+                    </Link>
+                  </article>
+                </motion.div>
+              ))}
             </div>
-          </div>
+          </motion.div>
           
-          <button className="absolute -right-4 z-20 rounded-full border border-gray-200 bg-white p-1 hover:bg-gray-100 lg:block">
-            <ChevronRight className="h-6 w-6" />
-          </button>
+          <motion.button 
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.9 }}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-20 hidden lg:flex items-center justify-center rounded-full border border-gray-200 bg-white p-1.5 hover:bg-gray-100 shadow-md"
+          >
+            <ChevronRight className="h-5 w-5" />
+          </motion.button>
         </div>
 
-        <div className="flex justify-center mt-8">
-          <Link href="/donation-results" className="text-orange-500 flex items-center gap-1 hover:underline">
-            ดูโครงการที่ปิดระดมทุน
-            <ChevronRight size={16} />
-          </Link>
-        </div>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+          transition={{ delay: 0.6, duration: 0.5 }}
+          className="flex justify-center pt-4 sm:pt-6"
+        >
+          <motion.div whileHover={{ scale: 1.05 }}>
+            <Link 
+              href="/donation-results" 
+              className="text-blue-500 flex items-center gap-1.5 text-sm sm:text-base hover:underline"
+            >
+              ดูโครงการที่ปิดระดมทุน
+              <ChevronRight size={18} />
+            </Link>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
